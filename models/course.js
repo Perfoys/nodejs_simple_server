@@ -1,14 +1,13 @@
-const uuid = require('uuid/v4')
+const { v4: uuid_v4 } = require('uuid');
 const fs = require('fs')
 const path = require('path')
-const { resolve } = require('path')
 
 class Course {
     constructor(title, price, img) {
         this.title = title
         this.price = price
         this.img = img
-        this.id = uuid()
+        this.id = uuid_v4()
     }
 
     toJSON() {
@@ -26,7 +25,7 @@ class Course {
 
         return new Promise((resolve, reject) => {
             fs.writeFile(
-                path.join(__dirname, '../data', 'courses.json'),
+                path.join(__dirname, '..', 'data', 'courses.json'),
                 JSON.stringify(courses),
                 (err) => {
                     if (err) {
@@ -43,15 +42,16 @@ class Course {
 
     static getAll() {
         return new Promise((resolve, reject) => {
-            fs.readFile(path.join(__dirname, '../data', 'courses.json'),
+            fs.readFile(path.join(__dirname, '..', 'data', 'courses.json'),
             'utf-8',
             (err, content) => {
                 if (err) {
                     reject(err)
-                } else {
+                } 
+                else if (content){
                     resolve(JSON.parse(content))
                 }
-    
+                resolve([])
             })
         })
         
